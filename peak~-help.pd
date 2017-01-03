@@ -1,0 +1,112 @@
+#N canvas 90 327 1121 421 12;
+#X text 8 52 summary:;
+#X text 8 122 parameters:;
+#X obj 593 95 noise~;
+#X obj 1003 43 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 840 206 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 593 225 env~;
+#X floatatom 593 249 5 0 0 0 - - -, f 5;
+#X obj 693 225 env~;
+#X floatatom 693 249 5 0 0 0 - - -, f 5;
+#X text 589 76 test signal;
+#X text 1019 40 dsp on/off;
+#X text 589 266 input gain;
+#X text 689 266 output gain;
+#N canvas 0 22 252 252 listen 0;
+#X obj 89 20 inlet;
+#X obj 18 175 *~;
+#X obj 89 84 * 0.1;
+#X msg 89 108 \$1 50;
+#X obj 89 132 line~;
+#X obj 18 207 dac~;
+#X obj 18 20 inlet~;
+#X msg 144 104 \; pd dsp 1;
+#X obj 89 45 t f f;
+#X obj 144 79 sel 1;
+#X connect 0 0 8 0;
+#X connect 1 0 5 0;
+#X connect 1 0 5 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 1;
+#X connect 6 0 1 0;
+#X connect 8 0 2 0;
+#X connect 8 1 9 0;
+#X connect 9 0 7 0;
+#X restore 771 225 pd listen;
+#X text 28 359 (note: both parameters are optionally creation arguments.)
+;
+#N canvas 0 22 231 221 dsp 0;
+#X obj 14 13 inlet;
+#X obj 14 173 outlet;
+#X obj 14 99 r pd;
+#X obj 14 124 route dsp;
+#X msg 14 149 set \$1;
+#X msg 14 38 \; pd dsp \$1;
+#X connect 0 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X restore 1003 61 pd dsp;
+#X text 8 392 Elliot Patros 2016;
+#X text 715 320 see also:;
+#X text 547 342 second order filters;
+#X text 571 366 equalizer filters;
+#X obj 806 366 lowshelf~;
+#X obj 886 366 peak~;
+#X text 856 204 volume on/off;
+#X obj 63 13 peak~;
+#X text 117 14 -- second order resonant peak filter;
+#X obj 718 342 lowpass~;
+#X obj 790 342 highpass~;
+#X obj 870 342 bandpass~;
+#X obj 950 342 notch~;
+#X text 571 391 nth order filters;
+#X obj 718 390 fir~;
+#X obj 1006 342 allpass~;
+#X obj 718 366 highshelf~;
+#X obj 795 66 hsl 128 15 -24 24 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 9600 1;
+#X floatatom 802 86 5 0 0 0 - - -, f 5;
+#X obj 845 116 hsl 128 15 160 16000 1 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 0 1;
+#X floatatom 852 136 5 0 0 0 - - -, f 5;
+#X text 895 135 freq (Hz.);
+#X text 845 86 dB;
+#X obj 745 16 hsl 128 15 0.01 1000 1 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 0 1;
+#X floatatom 752 36 5 0 0 0 - - -, f 5;
+#X text 795 36 Q;
+#X text 18 68 peak~ is a resonant peak filter. It takes three control
+rate parameters: "Q" \, "dB" and "freq".;
+#X text 18 139 Q: filter sharpness or width. Q is flat at 1/sqrt(2)
+\, or around 0.707 \, and higher Q values increase resonance. Values
+are limited to 0 < Q < 1000 \, though the most useful range will probably
+be 0 < Q <= 10 .;
+#X text 18 286 freq: filter cutoff frequency (Hz.). Controls the peak
+resonant frequency \, at which frequencies are changed by "dB". Values
+are limited to 0 < freq < nyquist to prevent the filter from becoming
+unstable.;
+#X text 18 212 dB: shelf height (dB.). Controls maximum amplitude change
+for shelf. No change when dB == 0 \, negative values attentuate \,
+and vice versa. Values are not limited \, though a normal range is
+often between -24 and 24 dB.;
+#X obj 693 167 peak~ 0.707 -6 1000;
+#X text 851 167 optional arguments (Q \, dB \, freq);
+#X connect 2 0 5 0;
+#X connect 2 0 46 0;
+#X connect 3 0 15 0;
+#X connect 4 0 13 1;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 15 0 3 0;
+#X connect 33 0 34 0;
+#X connect 33 0 46 2;
+#X connect 35 0 36 0;
+#X connect 35 0 46 3;
+#X connect 39 0 40 0;
+#X connect 39 0 46 1;
+#X connect 46 0 7 0;
+#X connect 46 0 13 0;
