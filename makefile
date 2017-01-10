@@ -7,19 +7,19 @@ clean: ; rm -f *.pd_linux *.o
 # note; you will certainly have to edit the definition of VC to agree with
 # whatever you've got installed on your machine:
 
-VC="D:\Program Files\Microsoft Visual Studio\Vc98"
+VC="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC"
 
-pd_nt: obj1.dll obj2.dll obj3.dll obj4.dll obj5.dll dspobj~.dll
+pd_nt: allpass~.dll bandpass~.dll fir~.dll highpass~.dll highshelf~.dll lowpass~.dll lowshelf~.dll notch~.dll peak~.dll
 
 .SUFFIXES: .obj .dll
 
-PDNTCFLAGS = /W3 /WX /DNT /DPD /nologo
+PDNTCFLAGS = /W3 /DNT /DPD /nologo
 
 PDNTINCLUDE = /I. /I\tcl\include /I..\..\src /I$(VC)\include
 
-PDNTLDIR = $(VC)\lib
-PDNTLIB = $(PDNTLDIR)\libc.lib \
-	$(PDNTLDIR)\oldnames.lib \
+PDNTLDIR = "C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x86"
+PDNTLIB = $(VC)\lib\msvcrt.lib \
+	$(VC)\lib\oldnames.lib \
 	$(PDNTLDIR)\kernel32.lib \
 	..\..\bin\pd.lib 
 
@@ -28,9 +28,41 @@ PDNTLIB = $(PDNTLDIR)\libc.lib \
 	link /dll /export:$*_setup $*.obj $(PDNTLIB)
 
 # override explicitly for tilde objects like this:
-dspobj~.dll: dspobj~.c; 
+allpass~.dll: allpass~.c 
 	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
-	link /dll /export:dspobj_tilde_setup $*.obj $(PDNTLIB)
+	link /dll /export:allpass_tilde_setup $*.obj $(PDNTLIB)
+	
+bandpass~.dll: bandpass~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:bandpass_tilde_setup $*.obj $(PDNTLIB)
+	
+fir~.dll: fir~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:fir_tilde_setup $*.obj $(PDNTLIB)
+	
+highpass~.dll: highpass~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:highpass_tilde_setup $*.obj $(PDNTLIB)
+	
+highshelf~.dll: highshelf~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:highshelf_tilde_setup $*.obj $(PDNTLIB)
+	
+lowpass~.dll: lowpass~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:lowpass_tilde_setup $*.obj $(PDNTLIB)
+
+lowshelf~.dll: lowshelf~.c 
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:lowshelf_tilde_setup $*.obj $(PDNTLIB)
+	
+notch~.dll: notch~.c
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:notch_tilde_setup $*.obj $(PDNTLIB)
+
+peak~.dll: peak~.c
+	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	link /dll /export:peak_tilde_setup $*.obj $(PDNTLIB)
 
 # ----------------------- LINUX i386 -----------------------
 
